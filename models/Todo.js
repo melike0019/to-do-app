@@ -3,22 +3,35 @@ const mongoose = require('mongoose');
 
 // Todo şemasını tanımlıyoruz
 const todoSchema = new mongoose.Schema({
-  // Todo metni alanı
-  text: {
-    type: String, // String tipinde
-    required: true, // Zorunlu alan
-    trim: true // Başındaki ve sonundaki boşlukları temizle
+  // Todo başlığı - zorunlu alan
+  title: {
+    type: String,
+    required: true
   },
-  // Tamamlanma durumu alanı
+  // Todo açıklaması - opsiyonel alan
+  description: {
+    type: String,
+    default: ''
+  },
+  // Tamamlanma durumu - varsayılan değer false
   completed: {
-    type: Boolean, // Boolean tipinde
-    default: false // Varsayılan değer: false
+    type: Boolean,
+    default: false
   },
-  // Kategori referansı alanı
-  categoryId: {
-    type: mongoose.Schema.Types.ObjectId, // MongoDB ObjectId tipinde
-    ref: 'Category', // Category modeline referans
-    required: true // Zorunlu alan
+  // Kategori referansı - opsiyonel alan
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  },
+  // Öncelik seviyesi - varsayılan değer 'normal'
+  priority: {
+    type: String,
+    enum: ['low', 'normal', 'high'],
+    default: 'normal'
+  },
+  // Bitiş tarihi - opsiyonel alan
+  dueDate: {
+    type: Date
   }
 }, {
   timestamps: true // Otomatik olarak createdAt ve updatedAt alanlarını ekle

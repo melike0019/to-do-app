@@ -7,12 +7,14 @@ const categorySchema = new mongoose.Schema({
   name: {
     type: String, // String tipinde
     required: true, // Zorunlu alan
-    trim: true // Başındaki ve sonundaki boşlukları temizle
+    trim: true, // Başındaki ve sonundaki boşlukları temizle
+    unique: true // Benzersiz olmalı
   },
   // Kategori rengi alanı
   color: {
     type: String, // String tipinde
-    required: true // Zorunlu alan
+    required: true, // Zorunlu alan
+    default: '#000000' // Varsayılan değer: siyah
   }
 }, {
   timestamps: true // Otomatik olarak createdAt ve updatedAt alanlarını ekle

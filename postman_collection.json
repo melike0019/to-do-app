@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "Todo App API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Categories",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/categories"
+      }
+    },
+    {
+      "name": "Create Category",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/categories",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Category\",\n  \"color\": \"#ff0000\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Todos",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5000/api/todos"
+      }
+    },
+    {
+      "name": "Create Todo",
+      "request": {
+        "method": "POST",
+        "url": "http://localhost:5000/api/todos",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"Test Todo\",\n  \"categoryId\": \"1\"\n}"
+        }
+      }
+    }
+  ]
+} 

@@ -5,20 +5,25 @@ const app = require('../server');
 
 // Test veritabanı bağlantısı
 beforeAll(async () => {
+    // Önce mevcut bağlantıyı kapat
+    await mongoose.disconnect();
+    // Test veritabanına bağlan
     await mongoose.connect('mongodb://127.0.0.1:27017/todo-app-test');
 });
 
 // Her testten sonra veritabanını temizle
 afterEach(async () => {
-    const collections = await mongoose.connection.db.collections();
-    for (let collection of collections) {
-        await collection.deleteMany({});
+    if (mongoose.connection.db) {
+        const collections = await mongoose.connection.db.collections();
+        for (let collection of collections) {
+            await collection.deleteMany({});
+        }
     }
 });
 
 // Tüm testler bittikten sonra bağlantıyı kapat
 afterAll(async () => {
-    await mongoose.connection.close();
+    await mongoose.disconnect();
 });
 
 // Kategori API Testleri

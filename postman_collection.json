@@ -1,56 +1,161 @@
 {
   "info": {
     "name": "Todo App API Tests",
+    "description": "Todo uygulaması için API test koleksiyonu",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Get Categories",
-      "request": {
-        "method": "GET",
-        "url": "http://localhost:5000/api/categories"
-      }
-    },
-    {
-      "name": "Create Category",
-      "request": {
-        "method": "POST",
-        "url": "http://localhost:5000/api/categories",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+      "name": "Kategoriler",
+      "item": [
+        {
+          "name": "Tüm Kategorileri Getir",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/categories",
+            "description": "Tüm kategorileri listeler"
+          },
+          "test": [
+            "pm.test('Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});",
+            "pm.test('Response is an array', function () {",
+            "    var jsonData = pm.response.json();",
+            "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+            "});"
+          ]
+        },
+        {
+          "name": "Yeni Kategori Ekle",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:5000/api/categories",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Test Kategori\",\n    \"color\": \"#FF0000\"\n}"
+            },
+            "description": "Yeni bir kategori ekler",
+            "test": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Category has correct name', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.name).to.eql('Test Kategori');",
+              "});",
+              "pm.test('Category has correct color', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.color).to.eql('#FF0000');",
+              "});"
+            ]
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Test Category\",\n  \"color\": \"#ff0000\"\n}"
         }
-      }
+      ]
     },
     {
-      "name": "Get Todos",
-      "request": {
-        "method": "GET",
-        "url": "http://localhost:5000/api/todos"
-      }
-    },
-    {
-      "name": "Create Todo",
-      "request": {
-        "method": "POST",
-        "url": "http://localhost:5000/api/todos",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
+      "name": "Todo'lar",
+      "item": [
+        {
+          "name": "Tüm Todo'ları Getir",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:5000/api/todos",
+            "description": "Tüm todo'ları listeler"
+          },
+          "test": [
+            "pm.test('Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});",
+            "pm.test('Response is an array', function () {",
+            "    var jsonData = pm.response.json();",
+            "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+            "});"
+          ]
+        },
+        {
+          "name": "Yeni Todo Ekle",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:5000/api/todos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Test Todo\",\n    \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "description": "Yeni bir todo ekler",
+            "test": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Todo has correct text', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.text).to.eql('Test Todo');",
+              "});",
+              "pm.test('Todo is not completed', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.completed).to.be.false;",
+              "});"
+            ]
           }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"text\": \"Test Todo\",\n  \"categoryId\": \"1\"\n}"
+        },
+        {
+          "name": "Todo Durumunu Güncelle",
+          "request": {
+            "method": "PUT",
+            "url": "http://localhost:5000/api/todos/{{todoId}}",
+            "description": "Todo'nun durumunu değiştirir"
+          },
+          "test": [
+            "pm.test('Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});",
+            "pm.test('Todo is completed', function () {",
+            "    var jsonData = pm.response.json();",
+            "    pm.expect(jsonData.completed).to.be.true;",
+            "});"
+          ]
+        },
+        {
+          "name": "Todo Sil",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:5000/api/todos/{{todoId}}",
+            "description": "Todo'yu siler"
+          },
+          "test": [
+            "pm.test('Status code is 200', function () {",
+            "    pm.response.to.have.status(200);",
+            "});",
+            "pm.test('Success message is correct', function () {",
+            "    var jsonData = pm.response.json();",
+            "    pm.expect(jsonData.message).to.eql('Todo silindi');",
+            "});"
+          ]
         }
-      }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "categoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "todoId",
+      "value": "",
+      "type": "string"
     }
   ]
 } 
